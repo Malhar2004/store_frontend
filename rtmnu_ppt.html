@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RTMNU PG Admission Portal 2026–27</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', sans-serif; background: #1a1a2e; color: #fff; overflow: hidden; height: 100vh; }
+
+  .ppt-wrapper { width: 100%; height: 100vh; display: flex; flex-direction: column; }
+
+  .slide-area { flex: 1; position: relative; overflow: hidden; }
+
+  .slide {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    display: none; flex-direction: column;
+    background: linear-gradient(135deg, #0d1b4b 0%, #1a3a6b 60%, #0d1b4b 100%);
+    padding: 0;
+  }
+  .slide.active { display: flex; }
+
+  /* Title slide */
+  .slide-title {
+    background: linear-gradient(135deg, #0a1628 0%, #1e3a7a 50%, #0a1628 100%) !important;
+    align-items: center; justify-content: center; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .slide-title::before {
+    content: ''; position: absolute; top: -60px; right: -60px;
+    width: 320px; height: 320px; border-radius: 50%;
+    background: rgba(255,165,0,0.07); 
+  }
+  .slide-title::after {
+    content: ''; position: absolute; bottom: -80px; left: -40px;
+    width: 260px; height: 260px; border-radius: 50%;
+    background: rgba(255,165,0,0.05);
+  }
+
+  .title-badge {
+    background: #ff9500; color: #0a1628; font-size: 11px; font-weight: 700;
+    padding: 5px 16px; border-radius: 20px; letter-spacing: 1.5px;
+    text-transform: uppercase; margin-bottom: 18px; display: inline-block;
+  }
+  .slide-title h1 { font-size: 42px; font-weight: 800; line-height: 1.15; margin-bottom: 10px; }
+  .slide-title h1 span { color: #ff9500; }
+  .slide-title .subtitle { font-size: 16px; color: rgba(255,255,255,0.7); margin-bottom: 28px; }
+  .title-info { display: flex; gap: 30px; justify-content: center; flex-wrap: wrap; }
+  .title-info-item { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,165,0,0.3);
+    border-radius: 10px; padding: 10px 20px; font-size: 13px; }
+  .title-info-item strong { color: #ff9500; display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+
+  /* Content slides */
+  .slide-header {
+    background: linear-gradient(90deg, rgba(255,149,0,0.15) 0%, transparent 100%);
+    border-bottom: 2px solid #ff9500;
+    padding: 18px 40px 14px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .slide-num {
+    background: #ff9500; color: #0a1628; font-size: 13px; font-weight: 800;
+    width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .slide-header h2 { font-size: 20px; font-weight: 700; color: #fff; }
+  .slide-header .subtitle { font-size: 12px; color: rgba(255,200,100,0.85); margin-top: 2px; }
+  .slide-body { flex: 1; padding: 22px 40px; overflow-y: auto; }
+
+  /* Cards */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+  .card {
+    background: rgba(255,255,255,0.07); border: 1px solid rgba(255,149,0,0.25);
+    border-radius: 10px; padding: 14px 16px; transition: background 0.2s;
+  }
+  .card:hover { background: rgba(255,149,0,0.1); }
+  .card-icon { font-size: 22px; margin-bottom: 8px; }
+  .card h3 { font-size: 13px; font-weight: 700; color: #ff9500; margin-bottom: 5px; }
+  .card p { font-size: 11.5px; color: rgba(255,255,255,0.7); line-height: 1.5; }
+
+  /* Steps */
+  .steps { display: flex; flex-direction: column; gap: 10px; }
+  .step {
+    display: flex; align-items: flex-start; gap: 14px;
+    background: rgba(255,255,255,0.05); border-left: 3px solid #ff9500;
+    border-radius: 0 8px 8px 0; padding: 12px 16px;
+  }
+  .step-num {
+    background: #ff9500; color: #0a1628; font-size: 12px; font-weight: 800;
+    width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px;
+  }
+  .step-content h3 { font-size: 13px; font-weight: 700; color: #fff; }
+  .step-content p { font-size: 11.5px; color: rgba(255,255,255,0.65); margin-top: 2px; line-height: 1.4; }
+
+  /* Flow steps horizontal */
+  .flow { display: flex; align-items: stretch; gap: 0; flex-wrap: wrap; }
+  .flow-step {
+    flex: 1; min-width: 110px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,149,0,0.2);
+    border-radius: 8px; padding: 12px 10px; text-align: center; position: relative;
+  }
+  .flow-step:not(:last-child)::after {
+    content: '→'; position: absolute; right: -14px; top: 50%; transform: translateY(-50%);
+    color: #ff9500; font-size: 16px; z-index: 2;
+  }
+  .flow-step + .flow-step { margin-left: 20px; }
+  .flow-icon { font-size: 20px; margin-bottom: 6px; }
+  .flow-step h3 { font-size: 11.5px; font-weight: 700; color: #ff9500; }
+  .flow-step p { font-size: 10.5px; color: rgba(255,255,255,0.6); margin-top: 3px; }
+
+  /* Two col */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .col-section h3 { font-size: 13px; color: #ff9500; font-weight: 700; margin-bottom: 8px; padding-bottom: 5px; border-bottom: 1px solid rgba(255,149,0,0.3); }
+  .feature-list { list-style: none; }
+  .feature-list li { font-size: 12px; color: rgba(255,255,255,0.75); padding: 4px 0; padding-left: 14px; position: relative; }
+  .feature-list li::before { content: '▸'; color: #ff9500; position: absolute; left: 0; }
+
+  /* Table */
+  .info-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .info-table th { background: rgba(255,149,0,0.2); color: #ff9500; padding: 8px 12px; text-align: left; font-weight: 700; }
+  .info-table td { padding: 8px 12px; color: rgba(255,255,255,0.8); border-bottom: 1px solid rgba(255,255,255,0.07); }
+  .info-table tr:hover td { background: rgba(255,149,0,0.05); }
+  .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10.5px; font-weight: 700; }
+  .badge-green { background: rgba(0,200,100,0.2); color: #00c864; }
+  .badge-blue { background: rgba(0,150,255,0.2); color: #4da6ff; }
+  .badge-orange { background: rgba(255,149,0,0.2); color: #ff9500; }
+
+  /* Nav */
+  .nav-bar {
+    background: rgba(0,0,0,0.4); border-top: 1px solid rgba(255,149,0,0.2);
+    padding: 10px 20px; display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-btn {
+    background: rgba(255,149,0,0.15); border: 1px solid rgba(255,149,0,0.4);
+    color: #ff9500; padding: 7px 18px; border-radius: 6px; cursor: pointer;
+    font-size: 13px; font-weight: 600; transition: all 0.2s;
+  }
+  .nav-btn:hover { background: #ff9500; color: #0a1628; }
+  .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .slide-counter { font-size: 13px; color: rgba(255,255,255,0.5); }
+  .progress-dots { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; max-width: 220px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.2); cursor: pointer; transition: background 0.2s; }
+  .dot.active { background: #ff9500; }
+  .dot:hover { background: rgba(255,149,0,0.6); }
+
+  /* Highlight box */
+  .highlight-box {
+    background: rgba(255,149,0,0.1); border: 1px solid rgba(255,149,0,0.35);
+    border-radius: 8px; padding: 10px 14px; margin-top: 12px; font-size: 12px;
+    color: rgba(255,255,255,0.75);
+  }
+  .highlight-box strong { color: #ff9500; }
+
+  /* Timeline */
+  .timeline { display: flex; flex-direction: column; gap: 8px; }
+  .tl-item { display: flex; gap: 12px; align-items: flex-start; }
+  .tl-dot { width: 12px; height: 12px; border-radius: 50%; background: #ff9500; margin-top: 3px; flex-shrink: 0; }
+  .tl-line { width: 2px; background: rgba(255,149,0,0.3); flex-shrink: 0; height: 100%; }
+  .tl-content h4 { font-size: 12.5px; font-weight: 700; color: #fff; }
+  .tl-content p { font-size: 11px; color: rgba(255,255,255,0.6); }
+</style>
+</head>
+<body>
+<div class="ppt-wrapper">
+  <div class="slide-area">
+
+    <!-- Slide 1: Title -->
+    <div class="slide slide-title active">
+      <div>
+        <div class="title-badge">Client Presentation · 2026–27</div>
+        <h1>RTMNU PG <span>Admission Portal</span></h1>
+        <div class="subtitle">Rashtrasant Tukadoji Maharaj Nagpur University<br>Centralised Online Postgraduate Admission System</div>
+        <div class="title-info">
+          <div class="title-info-item"><strong>Academic Year</strong>2026 – 2027</div>
+          <div class="title-info-item"><strong>Portal Type</strong>Centralised PG Admission</div>
+          <div class="title-info-item"><strong>Mode</strong>Fully Online</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Overview -->
+    <div class="slide">
+      <div class="slide-header">
+        <div class="slide-num">2</div>
+        <div>
+          <h2>Portal Overview</h2>
+          <div class="subtitle">A single-window system for all PG admissions</div>
+        </div>
+      </div>
+      <div class="slide-body">
+        <div class="card-grid">
+          <div class="card"><div class="card-icon">🎓</div><h3>Centralised Process</h3><p>One portal for all PG programmes across RTMNU affiliated colleges</p></div>
+          <div class="card"><div class="card-icon">🏛️</div><h3>Govt. Compliant</h3><p>Aligned with UGC, NEP 2020, reservation policy & Aadhaar-based verification</p></div>
+          <div class="card"><div class="card-icon">🔒</div><h3>Secure & Transparent</h3><p>DigiLocker, ABC ID integration and encrypted data handling</p></div>
+          <div class="card"><div class="card-icon">📱</div><h3>Mobile Ready</h3><p>Accessible on all devices — smartphone, tablet, desktop</p></div>
+          <div class="card"><div class="card-icon">📊</div><h3>Merit-Based</h3><p>Auto-generated category-wise merit lists, no manual interference</p></div>
+          <div class="card"><div class="card-icon">🤝</div><h3>Student-First</h3><p>Real-time dashboard, grievance redressal, scholarship tracking</p></div>
+        </div>
+        <div class="highlight-box">
+          <strong>Key Differentiator:</strong> Unlike MHT-CET, this portal does NOT require an entrance exam. Admission is based on UG merit/CGPA, making it more accessible for students across disciplines.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Admission Flow -->
+    <div class="slide">
+      <div class="slide-header">
+        <div class="slide-num">3</div>
+        <div>
+          <h2>Admission Process Flow</h2>
+          <div class="subtitle">End-to-end journey — Registration to Confirmation</div>
+        </div>
+      </div>
+      <div class="slide-body">
+        <div class="steps">
+          <div class="step"><div class="step-num">1</div><div class="step-content"><h3>Registration & Login</h3><p>Mobile/email OTP verification → Create credentials</p></div></div>
+          <div class="step"><div class="step-num">2</div><div class="step-content"><h3>Applicant Profile</h3><p>Personal details, Aadhaar/ABC ID, photo & signature upload</p></div></div>
+          <div class="step"><div class="step-num">3</div><div class="step-content"><h3>Academic Details & Programme Selection</h3><p>Enter UG marks/CGPA → Choose faculty-wise PG programmes with preferences</p></div></div>
+          <div class="step"><div class="step-num">4</div><div class="step-content"><h3>Document Upload & Fee Payment</h3><p>Marksheets, caste/migration certificates → Online payment & receipt</p></div></div>
+          <div class="step"><div class="step-num">5</div><div class="step-content"><h3>Merit List Publication</h3><p>Provisional & final merit lists, category-wise, fully transparent</p></div></div>
+          <div class="step"><div class="step-num">6</div><div class="step-content"><h3>Counselling & Seat Allotment</h3><p>Online choice filling → Seat allotment based on merit & preferences</p></div></div>
+          <div class="step"><div class="step-num">7</div><div class="step-content"><h3>Admission Confirmation</h3><p>Fee payment → Download Admission Letter</p></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Portal Modules -->
+    <div class="slide">
+      <div class="slide-header">
+        <div class="slide-num">4</div>
+        <div>
+          <h2>Portal Modules</h2>
+          <div class="subtitle">17 integrated modules for seamless operations</div>
+        </div>
+      </div>
+      <div class="slide-body">
+        <div class="two-col">
+          <div class="col-section">
+            <h3>Student-Facing Modules</h3>
+            <ul class="feature-list">
+              <li>Home Page — Notifications & Dates</li>
+              <li>Registration Module — OTP Verification</li>
+              <li>Applicant Profile — KYC Upload</li>
+              <li>Academic & Programme Selection</li>
+              <li>Document Upload Centre</li>
+              <li>Online Fee Payment & Receipt</li>
+              <li>Application Preview & Submission</li>
+              <li>Student Dashboard — Live Status</li>
+              <li>Scholarship Section & Tracking</li>
+              <li>Grievance & Helpline Module</li>
+            </ul>
+          </div>
+          <div class="col-section">
+            <h3>Admin & System Modules</h3>
+            <ul class="feature-list">
+              <li>Merit List — Provisional & Final</li>
+              <li>Counselling & Seat Allotment</li>
+              <li>Admission Confirmation Module</li>
+              <li>NPTEL / SWAYAM Integration</li>
+              <li>Admin Panel — Verify & Approve</li>
+              <li>Compliance — Reservation Policy</li>
+              <li>ABC / DigiLocker Integration</li>
+            </ul>
+            <div class="highlight-box" style="margin-top:10px;">
+              <strong>NPTEL/SWAYAM:</strong> Students can display earned online credits and apply for credit transfer during admission — aligned with NEP 2020.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Registration & Profile -->
+    <div class="slide">
+      <div class="slide-header">
+        <div class="slide-num">5</div>
+        <div>
+          <h2>Registration & Applicant Profile</h2>
+          <div class="subtitle">Secure, KYC-verified onboarding</div>
+        </div>
+      </div>
+      <div class="slide-body">
+        <div class="two-col" style="margin-bottom:14px;">
+          <div>
+            <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,149,0,0.2);border-radius:8px;padding:14px;">
+              <div style="font-size:13px;font-weight:700;color:#ff9500;margin-bottom:10px;">Registration Steps</div>
+              <div class="steps">
+                <div class="step"><div class="step-num" style="width:22px;height:22px;font-size:10px;">1</div><div class="step-content"><h3>Visit Portal / New Registration</h3></div></div>
+                <div class="step"><div class="step-num" style="width:22px;height:22px;font-size:10px;">2</div><div class="step-content"><h3>Mobile + Email OTP Verification</h3></div></div>
+                <div class="step"><div class="step-num" style="width:22px;height:22px;font-size:10px;">3</div><div class="step-content"><h3>Create Login Credentials</h3></div></div>
+                <div class="step"><div class="step-num" style="width:22px;height:22px;font-size:10px;">4</div><div class="step-content"><h3>Access Dashboard</h3></div></div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,149,0,0.2);border-radius:8px;padding:14px;">
+              <div style="font-size:13px;font-weight:700;color:#ff9500;margin-bottom:10px;">Profile Information Required</div>
+              <ul class="feature-list">
+                <li>Full name, DOB, gender, category</li>
+                <li>Domicile & nationality details</li>
+                <li>Aadhaar number (masked display)</li>
+                <li>ABC ID (Academic Bank of Credits)</li>
+                <li>Passport-size photograph upload</li>
+                <li>Signature image upload</li>
+                <li>Government photo ID upload</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="highlight-box">
+          <strong>DigiLocker Integration:</strong> Documents fetched directly from DigiLocker — no physical copies needed. Reduces fraud and speeds up verification.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Merit & Counselling -->
+    <div class="slide">
+      <div class="slide-header">
+        <div class="slide-num">6</div>
+        <div>
+          <h2>Merit List & Counselling</h2>
+          <div class="subtitle">Transparent, category-wise, merit-driven seat allotment</div>
+        </div>
+      </div>
+      <div class="slide-body">
+        <table class="info-table" style="margin-bottom:14px;">
+          <thead>
+            <tr><th>Stage</th><th>Description</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Provisional Merit List</td><td>Based on UG marks/CGPA — open for objections</td><td><span class="badge badge-orange">Published Online</span></td></tr>
+            <tr><td>Objection Window</td><td>Applicants can raise disputes via portal</td><td><span class="badge badge-blue">Online Window</span></td></tr>
+            <tr><td>Final Merit List</td><td>After review — category-wise final list</td><td><span class="badge badge-green">Auto-Generated</span></td></tr>
+            <tr><td>Choice Filling</td><td>Students fill programme/college preferences</td><td><span class="badge badge-blue">Student Action</span></td></tr>
+            <tr><td>Seat Allotment</td><td>Algorithm-based allotment respecting merit & preference</td><td><span class="badge badge-green">System-Generated</span></td></tr>
+            <tr><td>Allotment Letter</td><td>Downloadable from dashboard</td><td><span class="badge badge-green">Instant Download</span></td></tr>
+          </tbody>
+        </table>
+        <div class="highlight-box">
+          <strong>No Entrance Exam:</strong> Unlike MHT-CET, RTMNU PG admissions are based purely on UG academic performance — CGPA/marks — ensuring wider accessibility and reducing exam stress.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Technology & Compliance -->
+    <div class="slide">
+      <div class="slide-header">
+        <div class="slide-num">7</div>
+        <div>
+          <h2>Technology & Compliance</h2>
+          <div class="subtitle">Secure, policy-aligned, future-ready infrastructure</div>
+        </div>
+      </div>
+      <div class="slide-body">
+        <div class="card-grid" style="margin-bottom:14px;">
+          <div class="card"><div class="card-icon">🔐</div><h3>Data Security</h3><p>SSL encryption, masked Aadhaar, role-based admin access, audit trails</p></div>
+          <div class="card"><div class="card-icon">📋</div><h3>Reservation Policy</h3><p>SC/ST/OBC/EWS/PwD quotas auto-applied as per Maharashtra Govt. norms</p></div>
+          <div class="card"><div class="card-icon">🏦</div><h3>ABC / DigiLocker</h3><p>Academic Bank of Credits & DigiLocker API integration for verified documents</p></div>
+          <div class="card"><div class="card-icon">💳</div><h3>Online Payments</h3><p>Net banking, UPI, debit/credit cards with instant receipt generation</p></div>
+          <div class="card"><div class="card-icon">📚</div><h3>SWAYAM / NPTEL</h3><p>Online course credits recognised, integrated credit transfer as per NEP 2020</p></div>
+          <div class="card"><div class="card-icon">🎫</div><h3>Grievance System</h3><p>Ticketing system with SLA, FAQs, and dedicated helpline</p></div>
+        </div>
+        <div class="two-col">
+          <div class="col-section">
+            <h3>Admin Features</h3>
+            <ul class="feature-list">
+              <li>Document verification dashboard</li>
+              <li>Merit list generation controls</li>
+              <li>Admission approval workflow</li>
+              <li>Reports & analytics export</li>
+            </ul>
+          </div>
+          <div class="col-section">
+            <h3>Student Dashboard</h3>
+            <ul class="feature-list">
+              <li>Real-time application status</li>
+              <li>Document upload status</li>
+              <li>Notifications & alerts</li>
+              <li>Scholarship application tracking</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Key Dates -->
+    <div class="slide">
+      <div class="slide-header">
+        <div class="slide-num">8</div>
+        <div>
+          <h2>Key Dates & Schedule</h2>
+          <div class="subtitle">Indicative timeline for 2026–27 admissions</div>
+        </div>
+      </div>
+      <div class="slide-body">
+        <div class="two-col">
+          <div class="timeline">
+            <div class="tl-item"><div><div class="tl-dot"></div></div><div class="tl-content"><h4>Portal Launch & Notification</h4><p>Release of admission schedule & prospectus</p></div></div>
+            <div class="tl-item"><div><div class="tl-dot"></div></div><div class="tl-content"><h4>Online Registration Opens</h4><p>Students begin registration & profile creation</p></div></div>
+            <div class="tl-item"><div><div class="tl-dot"></div></div><div class="tl-content"><h4>Application & Fee Submission</h4><p>Document upload & application fee payment</p></div></div>
+            <div class="tl-item"><div><div class="tl-dot"></div></div><div class="tl-content"><h4>Provisional Merit List</h4><p>Category-wise lists published on portal</p></div></div>
+          </div>
+          <div class="timeline">
+            <div class="tl-item"><div><div class="tl-dot"></div></div><div class="tl-content"><h4>Objection Handling Window</h4><p>Applicants raise & resolve disputes</p></div></div>
+            <div class="tl-item"><div><div class="tl-dot"></div></div><div class="tl-content"><h4>Final Merit List</h4><p>Verified final list published</p></div></div>
+            <div class="tl-item"><div><div class="tl-dot"></div></div><div class="tl-content"><h4>Online Counselling & Choice Filling</h4><p>Preference submission & seat allotment</p></div></div>
+            <div class="tl-item"><div><div class="tl-dot"></div></div><div class="tl-content"><h4>Admission Confirmation</h4><p>Fee payment & admission letter download</p></div></div>
+          </div>
+        </div>
+        <div class="highlight-box" style="margin-top:14px;">
+          <strong>Note:</strong> Exact dates will be published on the official RTMNU website and notified via SMS/email to registered applicants.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9: Summary -->
+    <div class="slide">
+      <div class="slide-header">
+        <div class="slide-num">9</div>
+        <div>
+          <h2>Summary & Benefits</h2>
+          <div class="subtitle">Why this portal is the right solution</div>
+        </div>
+      </div>
+      <div class="slide-body">
+        <div class="card-grid" style="margin-bottom:14px;">
+          <div class="card"><div class="card-icon">✅</div><h3>Single Window</h3><p>One portal for all PG programmes — no multiple logins or systems</p></div>
+          <div class="card"><div class="card-icon">✅</div><h3>Paperless</h3><p>100% digital process from registration to admission letter</p></div>
+          <div class="card"><div class="card-icon">✅</div><h3>Transparent</h3><p>Auto-generated merit lists, no scope for manipulation</p></div>
+          <div class="card"><div class="card-icon">✅</div><h3>NEP 2020 Ready</h3><p>ABC ID, SWAYAM/NPTEL credit integration fully built-in</p></div>
+          <div class="card"><div class="card-icon">✅</div><h3>Inclusive</h3><p>Reservation-compliant, scholarship-linked, accessible to all</p></div>
+          <div class="card"><div class="card-icon">✅</div><h3>No Entrance Barrier</h3><p>Merit-based on UG performance — no separate exam required</p></div>
+        </div>
+        <div style="background:linear-gradient(90deg,rgba(255,149,0,0.15),transparent);border-left:3px solid #ff9500;border-radius:0 8px 8px 0;padding:12px 16px;margin-top:4px;">
+          <div style="font-size:13px;font-weight:700;color:#ff9500;margin-bottom:4px;">RTMNU PG Admission Portal 2026–27</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.7);">A fair, fast, and fully digital admission system — built for students, trusted by institutions.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 10: Thank You -->
+    <div class="slide slide-title">
+      <div>
+        <div class="title-badge">Thank You</div>
+        <h1>Questions & <span>Discussion</span></h1>
+        <div class="subtitle">RTMNU PG Admission Portal 2026–27<br>Rashtrasant Tukadoji Maharaj Nagpur University</div>
+        <div class="title-info">
+          <div class="title-info-item"><strong>Portal</strong>admissions.rtmnu.ac.in</div>
+          <div class="title-info-item"><strong>Helpdesk</strong>Available on Portal</div>
+          <div class="title-info-item"><strong>Prospectus</strong>Downloadable from Home Page</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Navigation -->
+  <div class="nav-bar">
+    <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)" disabled>← Previous</button>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;">
+      <div class="progress-dots" id="dots"></div>
+      <div class="slide-counter" id="counter">Slide 1 of 10</div>
+    </div>
+    <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next →</button>
+  </div>
+</div>
+
+<script>
+  var slides = document.querySelectorAll('.slide');
+  var cur = 0;
+  var dotsEl = document.getElementById('dots');
+
+  slides.forEach(function(_, i) {
+    var d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.onclick = function() { goTo(i); };
+    dotsEl.appendChild(d);
+  });
+
+  function goTo(n) {
+    slides[cur].classList.remove('active');
+    dotsEl.children[cur].classList.remove('active');
+    cur = n;
+    slides[cur].classList.add('active');
+    dotsEl.children[cur].classList.add('active');
+    document.getElementById('counter').textContent = 'Slide ' + (cur+1) + ' of ' + slides.length;
+    document.getElementById('prevBtn').disabled = cur === 0;
+    document.getElementById('nextBtn').disabled = cur === slides.length - 1;
+  }
+
+  function changeSlide(dir) { goTo(cur + dir); }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' && cur < slides.length - 1) changeSlide(1);
+    if (e.key === 'ArrowLeft' && cur > 0) changeSlide(-1);
+  });
+</script>
+</body>
+</html>
